@@ -3,52 +3,43 @@ version: '3'
 services:
   frontend:
     build: ./frontend
-    command: npm run start
-    container_name: frontend
+    command: npm start
     stdin_open: true
     tty: true
     volumes:
-      - ./frontend/src:/usr/src/app/src
+      - ${FRONTEND_PATH_HOST}:${FRONTEND_PATH_CONTAINER}
+    working_dir: ${FRONTEND_PATH_CONTAINER}
 
   backend:
     build: ./backend
-    container_name: backend
     environment:
       MYSQL_DATABASE: ${MYSQL_DB_NAME}
       MYSQL_USER: ${MYSQL_DB_USER_NAME}
       MYSQL_PASSWORD: ${MYSQL_DB_USER_PASS}
       APACHE_RUN_USER: www-data
     volumes:
-      - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-      - ./shell-scripts:${APP_PATH_CONTAINER}/shell-scripts
+      - ${BACKEND_PATH_HOST}:${BACKEND_PATH_CONTAINER}
+      - ./shell-scripts:${BACKEND_PATH_CONTAINER}/shell-scripts
     depends_on:
       - db
-    ports:
-      - 8080:80
-    working_dir: ${APP_PATH_CONTAINER}
+    working_dir: ${BACKEND_PATH_CONTAINER}
 
   db:
     image: mysql:5.7
-    container_name: db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_DB_ROOT_PASS}
       MYSQL_DATABASE: ${MYSQL_DB_NAME}
       MYSQL_USER: ${MYSQL_DB_USER_NAME}
       MYSQL_PASSWORD: ${MYSQL_DB_USER_PASS}
-    ports:
-      - 6033:3306
     volumes:
       - ${DB_PATH_HOST}:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin:5.1.1-fpm-alpine
     restart: always
-    container_name: phpmyadmin
     links:
       - db
-    ports:
-      - 8081:80
     depends_on:
       - db
     environment:
@@ -57,10 +48,10 @@ services:
       PMA_ARBITRARY: 1
 
   composer:
-    image: composer:1.6
+    image: composer:2
     volumes:
-      - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-    working_dir: ${APP_PATH_CONTAINER}
+      - ${BACKEND_PATH_HOST}:${BACKEND_PATH_CONTAINER}
+    working_dir: ${BACKEND_PATH_CONTAINER}
     depends_on:
       - backend
     command: composer install
@@ -74,3 +65,4 @@ services:
     depends_on:
       - backend
       - frontend
+      - phpmyadmin

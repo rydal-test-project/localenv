@@ -12,12 +12,7 @@ server {
   }
 
   location /api {
-    proxy_pass http://172.18.0.1:8080;
+    proxy_pass http://backend/public;
     rewrite ^/api/(.*) /public/api/$1 break;
-  }
-
-  location /db {
-    proxy_pass http://172.18.0.2;
-    rewrite ^/db/(.*) /$1 break;
   }
 }
