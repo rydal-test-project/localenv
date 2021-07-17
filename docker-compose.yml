@@ -3,12 +3,11 @@ version: '3'
 services:
   frontend:
     build: ./frontend
-    command: npm start
     stdin_open: true
     tty: true
     volumes:
       - ${FRONTEND_PATH_HOST}:${FRONTEND_PATH_CONTAINER}
-    working_dir: ${FRONTEND_PATH_CONTAINER}
+    command: npm start
 
   backend:
     build: ./backend
