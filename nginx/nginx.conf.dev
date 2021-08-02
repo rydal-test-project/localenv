@@ -14,4 +14,7 @@ server {
   location /api {
     proxy_pass http://backend/public/api;
   }
+  location /oauth {
+    proxy_pass http://backend/public/oauth;
+  }
 }

@@ -2,6 +2,7 @@ dc-init:
 	@docker-compose up --build --detach
 	@docker-compose exec backend bash shell-scripts/base.sh
 	@make dc-db-init
+	@docker-compose exec backend bash shell-scripts/lara-passort-init.sh
 
 dc-db-init:
 	@make dc-db-fresh
