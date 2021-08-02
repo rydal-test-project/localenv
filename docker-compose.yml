@@ -2,12 +2,13 @@ version: '3'
 
 services:
   frontend:
-    build: ./frontend
-    command: npm run start
+    image: node:14.12.0-alpine
+    command: sh -c "npm i && npm run start"
     stdin_open: true
     tty: true
+    working_dir: /usr/app
     volumes:
-      - ./frontend/src:/usr/src/app/src
+      - ./frontend:/usr/app
 
   backend:
     build: ./backend
