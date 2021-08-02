@@ -36,12 +36,16 @@ services:
       - ${DB_PATH_HOST}:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin:5.1.1-fpm-alpine
+    image: phpmyadmin:5
     restart: always
     links:
       - db
+    ports:
+      - 8081:80
     depends_on:
       - db
+    volumes:
+      - /sessions
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
