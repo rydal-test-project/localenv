@@ -2,6 +2,7 @@ version: '3'
 
 services:
   frontend:
+    container_name: rtp_front
     image: node:14.12.0-alpine
     command: sh -c "npm i && npm run start"
     stdin_open: true
@@ -11,6 +12,7 @@ services:
       - ./frontend:/usr/app
 
   backend:
+    container_name: rtp_back
     build: ./backend
     environment:
       MYSQL_DATABASE: ${MYSQL_DB_NAME}
@@ -25,6 +27,7 @@ services:
     working_dir: ${BACKEND_PATH_CONTAINER}
 
   db:
+    container_name: rtp_db
     image: mysql:5.7
     restart: always
     environment:
@@ -36,6 +39,7 @@ services:
       - ${DB_PATH_HOST}:/var/lib/mysql
 
   phpmyadmin:
+    container_name: rtp_phpmyadmin
     image: phpmyadmin:5
     restart: always
     links:
@@ -61,6 +65,7 @@ services:
     command: composer install
 
   nginx:
+    container_name: rtp_nginx
     image: nginx:stable-alpine
     ports:
       - "80:80"
