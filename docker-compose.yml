@@ -4,7 +4,7 @@ services:
   frontend:
     container_name: rtp_front
     image: node:14.12.0-alpine
-    command: sh -c "npm i && npm run start"
+    command: sh -c "node --stack-size=4000 /usr/local/lib/node_modules/npm/bin/npm-cli.js install && npm run start"
     stdin_open: true
     tty: true
     working_dir: /usr/app
