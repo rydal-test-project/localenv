@@ -1,7 +1,9 @@
 dc-init:
 	@docker-compose up --build --detach
+	@make dc-back-base
+
+dc-back-base:
 	@docker-compose exec backend bash shell-scripts/base.sh
-	@make dc-db-init
 
 dc-db-init:
 	@make dc-db-fresh
