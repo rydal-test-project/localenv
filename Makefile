@@ -1,6 +1,7 @@
 dc-init:
 	@make dc-start
 	@make dc-back-base
+	@make dc-db-init
 
 dc-start:
 	@docker-compose up --build --detach
