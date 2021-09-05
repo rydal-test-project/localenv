@@ -1,6 +1,9 @@
 dc-init:
-	@docker-compose up --build --detach
+	@make dc-start
 	@make dc-back-base
+
+dc-start:
+	@docker-compose up --build --detach
 
 dc-back-base:
 	@docker-compose exec backend bash shell-scripts/base.sh
